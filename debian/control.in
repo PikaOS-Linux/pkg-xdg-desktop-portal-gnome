@@ -1,0 +1,53 @@
+Source: xdg-desktop-portal-gnome
+Section: gnome
+Priority: optional
+Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
+Uploaders: Simon McVittie <smcv@debian.org>, @GNOME_TEAM@
+Build-Depends:
+ debhelper-compat (= 13),
+ dh-sequence-gnome,
+ gsettings-desktop-schemas-dev (>= 41),
+ libfontconfig-dev,
+ libadwaita-1-dev,
+ libglib2.0-dev (>= 2.44),
+ libgnome-desktop-4-dev,
+ libgnome-bg-4-dev,
+ libgtk-4-dev (>= 4.0),
+ meson (>= 0.57.0),
+ systemd (>= 242),
+ xdg-desktop-portal-dev (>= 1.17.1),
+ xmlto,
+Rules-Requires-Root: no
+Standards-Version: 4.6.2
+Homepage: https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome
+Vcs-Git: https://salsa.debian.org/gnome-team/xdg-desktop-portal-gnome.git
+Vcs-Browser: https://salsa.debian.org/gnome-team/xdg-desktop-portal-gnome
+
+Package: xdg-desktop-portal-gnome
+Architecture: linux-any
+Multi-Arch: foreign
+Depends:
+ dbus-user-session | dbus-x11,
+ gsettings-desktop-schemas,
+ xdg-desktop-portal (>= 1.17.1),
+ xdg-desktop-portal-gtk,
+ ${misc:Depends},
+ ${shlibs:Depends},
+Recommends:
+ gnome-shell (>= 41~) | budgie-desktop (>= 10.5.3-3~),
+ gnome-settings-daemon (>= 41~),
+Suggests:
+ accountsservice,
+ evince,
+Provides:
+ xdg-desktop-portal-backend (= 1.7.1),
+Description: GNOME portal backend for xdg-desktop-portal
+ xdg-desktop-portal-gnome provides a GNOME implementation for the
+ desktop-agnostic xdg-desktop-portal service. This allows sandboxed
+ applications to request services from outside the sandbox using
+ GNOME services (session manager, screenshot provider, Shell) or
+ GNOME-style user interfaces.
+ .
+ Non-GNOME GTK-based desktop environments should normally use
+ xdg-desktop-portal-gtk or their own portal implementation instead of
+ this one.

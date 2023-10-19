@@ -1,0 +1,176 @@
+xdg-desktop-portal-gnome (45.0-100pika1) pikauwu; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 18 Sep 2023 09:26:06 -0400
+
+xdg-desktop-portal-gnome (45.0-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 18 Sep 2023 09:26:06 -0400
+
+xdg-desktop-portal-gnome (45~rc-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 05 Sep 2023 08:30:38 -0400
+
+xdg-desktop-portal-gnome (44.2-2) unstable; urgency=medium
+
+  * Bump minimum xdg-desktop-portal to 1.17.1 (LP: #2013116) (Closes: #1032584)
+  * Release to unstable
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Sat, 02 Sep 2023 17:01:39 -0400
+
+xdg-desktop-portal-gnome (44.2-1) experimental; urgency=medium
+
+  * New upstream release
+  * Update standards version to 4.6.2, no changes needed
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 04 Aug 2023 15:44:36 -0400
+
+xdg-desktop-portal-gnome (44.1-2) experimental; urgency=medium
+
+  * Add patch to send remote file URIs as local FUSE URIs (LP: #1971168)
+
+ -- Sergio Costas Rodriguez <sergio.costas@canonical.com>  Tue, 18 Jul 2023 10:35:30 -0400
+
+xdg-desktop-portal-gnome (44.1-1) experimental; urgency=medium
+
+  * New upstream release
+    - Improve handling of non-existing files on the filechooser portal
+    - Minor debugging improvements to the backgrounds portal
+    - More precise initialization timing
+      (https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome/-/issues/79)
+    - Fix duplicate monitor and window streams (LP: #2012341)
+      (https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome/-/issues/76)
+    - Translation updates
+  * Drop screencast-Duplicate-monitor-and-window-stream-info.patch,
+    included in the 44.1 upstream release.
+
+ -- Amin Bandali <bandali@ubuntu.com>  Thu, 27 Apr 2023 09:43:25 -0400
+
+xdg-desktop-portal-gnome (44.0-1) experimental; urgency=medium
+
+  [ Matthias Geiger ]
+  * New upstream release
+    - Grant restore permission to transient mode by default
+    - Translation updates
+
+  [ Iain Lane ]
+  * d/p/screencast-Duplicate-monitor-and-window-stream-info.patch:
+    Cherry-pick.  Fix use-after-free crash when window list changes between
+    being shown and the user making their selection. (LP: #2012341)
+
+ -- Iain Lane <laney@debian.org>  Sun, 16 Apr 2023 20:33:39 +0100
+
+xdg-desktop-portal-gnome (44~beta-1) experimental; urgency=medium
+
+  * New upstream release
+  * debian/control.in: Bump minimum meson
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 21 Feb 2023 15:20:30 -0500
+
+xdg-desktop-portal-gnome (43.1-2) unstable; urgency=medium
+
+  [ Simon McVittie ]
+  * d/control.in: Drop unused dbus build-dependency
+
+  [ Debian Janitor ]
+  * Set upstream metadata fields: Contact.
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Wed, 07 Dec 2022 14:22:46 -0500
+
+xdg-desktop-portal-gnome (43.1-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 18 Oct 2022 13:25:20 -0400
+
+xdg-desktop-portal-gnome (43.0-1) unstable; urgency=medium
+
+  * New upstream release
+  * Release to unstable
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Thu, 15 Sep 2022 17:32:35 -0400
+
+xdg-desktop-portal-gnome (43~rc-1) experimental; urgency=medium
+
+  * New upstream release
+  * debian/xdg-desktop-portal-gnome.install: Install gsettings schema
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Wed, 07 Sep 2022 10:33:39 -0400
+
+xdg-desktop-portal-gnome (43~beta-1) experimental; urgency=medium
+
+  * New upstream release
+  * Bump minimum xdg-desktop-portal to 1.15.0
+  * debian/control.in: Build-Depend on systemd
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Mon, 15 Aug 2022 07:13:21 -0400
+
+xdg-desktop-portal-gnome (42.3-1) unstable; urgency=medium
+
+  * New upstream release
+  * Standards-Version: 4.6.1 (no changes required)
+
+ -- Simon McVittie <smcv@debian.org>  Sat, 09 Jul 2022 17:30:22 +0100
+
+xdg-desktop-portal-gnome (42.1-1) unstable; urgency=medium
+
+  * New upstream release (LP: #1970609)
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Wed, 27 Apr 2022 15:42:05 -0400
+
+xdg-desktop-portal-gnome (42.0.1-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 18 Mar 2022 14:34:07 -0400
+
+xdg-desktop-portal-gnome (42~rc-1) unstable; urgency=medium
+
+  * New upstream release
+  * Build-Depend on libadwaita-1-dev
+  * Build-Depend on libgnome-desktop-4-dev & libgnome-bg-4-dev
+  * debian/patches: Drop all patches: applied in new release
+
+ -- Jeremy Bicha <jeremy.bicha@canonical.com>  Tue, 08 Mar 2022 11:57:18 -0500
+
+xdg-desktop-portal-gnome (41.1-2) unstable; urgency=medium
+
+  [ Sebastien Bacher ]
+  * debian/control:
+    - use the correct case for Multi-Arch to silent a lintian warning
+  * Create a control.in and use dh-sequence-gnome.
+    This is standard for our GNOME packages and also will mean the
+    translations will be handled correctly in Ubuntu.
+
+  [ Simon McVittie ]
+  * d/patches: Update translations from upstream gnome-41 branch
+
+ -- Simon McVittie <smcv@debian.org>  Fri, 11 Feb 2022 10:54:57 +0000
+
+xdg-desktop-portal-gnome (41.1-1) unstable; urgency=medium
+
+  * New upstream release
+    - Force use of cairo GSK renderer to avoid a crash
+    - Translation updates
+  * Add missing runtime dependency on gsettings-desktop-schemas
+  * Drop unnecessary build-dependency on libgnome-desktop-3-dev.
+    The code formerly used from gnome-desktop3 has been copied into this
+    project.
+  * Add Recommends on gnome-shell | budgie-desktop.
+    Many of the portal implementations in this package need a mutter-based
+    window manager.
+  * Add Recommends on gnome-settings-daemon.
+    The settings portal uses this if available.
+
+ -- Simon McVittie <smcv@debian.org>  Mon, 15 Nov 2021 20:45:27 +0000
+
+xdg-desktop-portal-gnome (41.0-1) unstable; urgency=medium
+
+  * Initial packaging (Closes: #994773)
+
+ -- Simon McVittie <smcv@debian.org>  Tue, 21 Sep 2021 18:35:44 +0100

@@ -14,6 +14,7 @@ for i in $(cat ../patches/series) ; do echo "Applying Patch: $i" && patch -Np1 -
 apt-get build-dep ./ -y
 
 # Build package
+LOGNAME=root dh_make --createorig -y -l -p xdg-desktop-portal-gnome_45.0
 dpkg-buildpackage --no-sign
 
 # Move the debs to output

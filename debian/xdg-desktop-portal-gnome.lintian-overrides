@@ -1,0 +1,2 @@
+# This is a portal provider and doesn't need a manpage as such
+xdg-desktop-portal-gnome: no-manual-page [usr/libexec/xdg-desktop-portal-gnome]
