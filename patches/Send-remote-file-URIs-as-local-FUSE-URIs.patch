@@ -1,0 +1,114 @@
+From: Sergio Costas Rodriguez <sergio.costas@canonical.com>
+Date: Mon, 17 Jul 2023 16:01:56 +0200
+Subject: Send remote file URIs as local FUSE URIs
+
+Several people complain that they can't save files in remote
+drives (like a SMB mount) from containerized applications (like
+Firefox). After doing several tests, I found that it worked fine
+when using xdg-desktop-portal-gtk, but not when using
+xdg-desktop-portal-gnome.
+
+The reason seems to be that xdg-desktop-portal-gtk translates
+the smb:// URIs (and other remote URIs like sftp://) into
+locally accessible file:// URIs (thanks to the FUSE backends
+available with Gvfs), but xdg-desktop-portal-gnome doesn't do
+that.
+
+This patch fixes this by checking each URI obtained from the
+GtkFileChooser dialog, and if it isn't a "file://" one, it tries
+to translate it into its FUSE local URI.
+
+Fix https://bugzilla.mozilla.org/show_bug.cgi?id=1773624
+Fix https://github.com/flatpak/xdg-desktop-portal/issues/213
+Fix https://github.com/flatpak/xdg-desktop-portal/issues/820
+Fix https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome/-/issues/45
+Fix LP: #1971168
+---
+ src/filechooser.c | 67 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
+
+diff --git a/src/filechooser.c b/src/filechooser.c
+index 71135c9..7f4fd25 100644
+--- a/src/filechooser.c
++++ b/src/filechooser.c
+@@ -295,6 +295,22 @@ send_response (FileDialogHandle *handle)
+   file_dialog_handle_close (handle);
+ }
+ 
++// Copied from https://gitlab.gnome.org/GNOME/totem/blob/master/src/backend/bacon-video-widget.c#L3571
++static char *
++get_target_uri (GFile *file)
++{
++  GFileInfo *info;
++  char *target;
++
++  info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_TARGET_URI, G_FILE_QUERY_INFO_NONE, NULL, NULL);
++  if (info == NULL)
++    return NULL;
++  target = g_strdup (g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_TARGET_URI));
++  g_object_unref (info);
++
++  return target;
++}
++
+ static GSList *
+ get_uris (GtkFileChooser *filechooser)
+ {
+@@ -309,6 +325,57 @@ get_uris (GtkFileChooser *filechooser)
+       g_autoptr(GFile) file = g_list_model_get_item (files, i);
+       g_autofree char *uri = g_file_get_uri (file);
+ 
++      /*
++       * Transform 'trash:///' and 'recent:///' URIs into
++       * local ones.
++       */
++      if (g_file_has_uri_scheme (file, "trash") != FALSE ||
++          g_file_has_uri_scheme (file, "recent") != FALSE)
++        {
++          gchar *target_uri = get_target_uri (file);
++          if (target_uri != NULL)
++            {
++              g_free (uri);
++              uri = target_uri;
++            }
++        }
++
++      /*
++       * xdg-desktop-portal-gtk shows remote file systems (like
++       * SMB or SSH), and translates their non-local URIs (like
++       * smb:// or ssh://) into local ones (file://) because
++       * gtk_file_chooser_get_uris() from Gtk3 does that job
++       * automagically, using the local path offered by the
++       * FUSE mounts of Gvfsd.
++       *
++       * xdg-desktop-portal-gnome shows these remote FS too, but
++       * the method gtk_file_chooser_get_files() from Gtk4 returns
++       * a list of GFiles instead, and getting the URI value on these
++       * doesn't do that translation; this means that remote SMB or
++       * SSH mounts are shown in the dialog, and the user can choose
++       * files inside them, but the containerized application won't
++       * be able to access them, because xdg-desktop-portal removes
++       * those paths sent by xdg-desktop-portal-XXXX that aren't
++       * locally accesable.
++       *
++       * This piece of code adds the original functionality by asking
++       * to the GFile the local path for all non-file:// URI, offered
++       * by Gvfsd and the FUSE mount.
++       */
++
++      if (g_file_has_uri_scheme (file, "file") == FALSE)
++        {
++          g_autofree char *path = g_file_get_path (file);
++          if (path != NULL)
++            {
++              gchar *filename_uri = g_filename_to_uri (path, NULL, NULL);
++              if (filename_uri != NULL)
++                {
++                  g_free (uri);
++                  uri = filename_uri;
++                }
++            }
++        }
+       uris = g_slist_prepend (uris, g_steal_pointer (&uri));
+     }
+ 
