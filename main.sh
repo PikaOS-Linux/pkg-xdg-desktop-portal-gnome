@@ -3,9 +3,9 @@
 DEBIAN_FRONTEND=noninteractive
 
 # Clone Upstream
-mkdir -p ./src-pkg-name
-cp -rvf ./debian ./src-pkg-name/
-cd ./src-pkg-name/
+git clone https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome -b 45.0
+cp -rvf ./debian ./xdg-desktop-portal-gnome/
+cd ./xdg-desktop-portal-gnome/
 
 # Get build deps
 apt-get build-dep ./ -y
